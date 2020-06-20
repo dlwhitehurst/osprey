@@ -13,4 +13,19 @@ The Osprey Mock Service is maintained as open source here:
 To experiment and run this Osprey implementation example, first clone this software repository or fork it if
 you have suggestions for improvement.
 
-    git clone 
+    git clone https://github.com/dlwhitehurst/osprey.git
+
+## Prerequisites
+
+Before you can run the Osprey Mock Service you must use the Node Package Manager (NPM) and either install
+the service globally (quickest) or locally within your project directory. Do note that local installation
+requires the use of an application Javascript module. If you install globally, you can implement your own
+mocks anywhere using just a RAML specification.
+
+### Global Install
+
+Text
+
+### Project Install
+
+Text
