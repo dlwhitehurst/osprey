@@ -30,7 +30,7 @@ and basic Javascript. If not, here are a few links to some general education:
 ## Prerequisites
 
 Before you can run the Osprey Mock Service you must use the Node Package Manager (NPM) and either install
-the `osprey-mock-service` globally (quickest) or locally within your project directory. Note that a local 
+the `osprey-mock-service` globally (quickest) or locally within your project directory. Please note that a local 
 installation requires the use of an application Javascript module (actual source code). If you install 
 globally, you can implement your own mocks anywhere using just a RAML specification.
 
@@ -59,7 +59,7 @@ module to parse the RAML specification and activate the mocking service.
 
 In this case, create a file called `app.js` and paste this into it and save the file.
 
-    var mockService = require('../osprey-mock-service')
+    var mockService = require('osprey-mock-service')
     var express =     require('express')
     var parser =      require('raml-1-parser')
     var path =        require('path')
@@ -73,7 +73,21 @@ In this case, create a file called `app.js` and paste this into it and save the 
          app.use( osprey.server(raml) )
          app.use( mockService(raml) )
          app.listen(3000)
+         console.log('Express server running on port 3000');
        }) 
+
+Once you've created the file, you can run the new Javascript application like so:
+
+    node app.js
+
+Also, note that using the global service is easier and also provides more console output.
+
+## Docker 
+
+This mocking service would be very convenient if made into a Docker container and used a Docker volume to 
+source the RAML 1.0 specification. *Stay tuned here ... this may be coming. I don't think the `osprey-mock-service`
+currently utilizes or is driven by the entire RAML 1.0 specification. So a reference implementation has not
+been located that I am aware of.*
 
 ## License
 
