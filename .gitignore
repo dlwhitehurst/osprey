@@ -1,2 +1,5 @@
 # local-only files
 _*
+
+# npm deps
+node_modules/*
