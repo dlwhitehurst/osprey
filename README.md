@@ -15,17 +15,66 @@ you have suggestions for improvement.
 
     git clone https://github.com/dlwhitehurst/osprey.git
 
+## Assumptions
+
+This README assumes that you are familiar with REST API development, RAML 1.0, NodeJS, Node Package Manager (NPM), 
+and basic Javascript. If not, here are a few links to some general education:
+
+ - [https://restfulapi.net/](https://restfulapi.net/)
+ - [https://raml.org/developers/whats-new-raml-10](https://raml.org/developers/whats-new-raml-10)
+ - [https://nodejs.org/en/](https://nodejs.org/en/)
+ - [https://www.npmjs.com/](https://www.npmjs.com/)
+ - [https://developer.mozilla.org/en-US/docs/Web/JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+
 ## Prerequisites
 
 Before you can run the Osprey Mock Service you must use the Node Package Manager (NPM) and either install
-the service globally (quickest) or locally within your project directory. Do note that local installation
-requires the use of an application Javascript module. If you install globally, you can implement your own
-mocks anywhere using just a RAML specification.
+the `osprey-mock-service` globally (quickest) or locally within your project directory. Note that a local 
+installation requires the use of an application Javascript module (actual source code). If you install 
+globally, you can implement your own mocks anywhere using just a RAML specification.
 
 ### Global Install
 
-Text
+    npm install -g osprey-mock-service
 
 ### Project Install
 
-Text
+    cd <project-root>
+    npm install osprey-mock-service --save
+
+Once the `osprey-mock-service` is installed, you can run and host the service. 
+
+## Run the Mock Service
+
+If the `osprey-mock-service` was installed globally, you can run a mocking service with just a RAML API 
+specification. The filename will be sourced into the service within the shell command that is issued.
+
+    osprey-mock-service -f api.raml -p 3000 --cors
+
+As long as `api.raml` is available to the shell process, `osprey-mock-service` will source the file and
+provide the mock service using the RAML as mocking service's API specification. Please note that if you
+installed the `osprey-mock-service` at your project root, you will need to create a simple Javascript
+module to parse the RAML specification and activate the mocking service.
+
+In this case, create a file called `app.js` and paste this into it and save the file.
+
+    var mockService = require('../osprey-mock-service')
+    var express =     require('express')
+    var parser =      require('raml-1-parser')
+    var path =        require('path')
+    var osprey =      require('osprey')
+
+    var app = express()
+
+    parser.loadRAML(path.join(__dirname, 'api.raml'), { rejectOnErrors: true })
+      .then(function (ramlApi) {
+         var raml = ramlApi.expand(true).toJSON({ serializeMetadata: false })
+         app.use( osprey.server(raml) )
+         app.use( mockService(raml) )
+         app.listen(3000)
+       }) 
+
+## License
+
+Apache License 2.0 
